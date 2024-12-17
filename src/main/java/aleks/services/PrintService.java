@@ -12,4 +12,9 @@ public interface PrintService {
 
     // the link has been created
     public void printLinkCreated();
+
+    //print a pretty list of available links - move form LinkService
+    public void printPrettyListOfLinks();
+
+
 }
