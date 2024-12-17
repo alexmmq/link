@@ -3,13 +3,19 @@ package aleks.services;
 import aleks.controllers.LinkControllerImpl;
 import aleks.entity.User;
 
+import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Iterator;
 import java.util.Map;
 
 public class LinkServiceImpl implements LinkService{
+    LinkControllerImpl linkController = new LinkControllerImpl();
     @Override
     public String createAShortLink(String longLink, User user) {
-        LinkControllerImpl linkController = new LinkControllerImpl();
-        //create a method of generating a random string - iterate through UUID, get first char,
+
+        //a method of generating a random string - iterate through UUID, get first char,
         //get last char of long link, convert both to int, calculate average, add Math.random()*10
         //take this as a one char for the new link
         String link = "https://link/";
@@ -26,14 +32,40 @@ public class LinkServiceImpl implements LinkService{
         }
 
         //invoke a create entry method of LinkController
+        linkController.createEntry(stringBuilder.toString(),longLink, user);
         return stringBuilder.toString();
     }
 
     @Override
-    public Map<String, String> getListOfAvailableLinks(User user) {
-        LinkControllerImpl linkController = new LinkControllerImpl();
+    public void getPrettyListOfAvailableLinks(User user) {
+        // force removing of expired links
+        linkController.removeExpiredLinks(user);
+        Map<String, String> links = user.getLinks();
 
-        //invoke remove expired links method of controller
-        return null;
+        //pretty formatting of map for user
+        System.out.println(" Short Links         " + "Long Links");
+        Iterator<Map.Entry<String, String>> iterator = links.entrySet().iterator();
+        while(iterator.hasNext()){
+            System.out.print(iterator.next().getKey() + " " + iterator.next().getValue());
+        }
+    }
+
+    @Override
+    public void removeAShortLink(String shortLink, User user) {
+        linkController.removeEntry(shortLink, user);
+    }
+
+    @Override
+    public void connectToLink(String shortLink, User user) {
+        // force removing of expired links
+        linkController.removeExpiredLinks(user);
+        //Positive Case
+        if(linkController.checkIfLinkExists(shortLink, user)){
+            try {
+                Desktop.getDesktop().browse(new URI(linkController.getTheLink(shortLink, user)));
+            } catch (IOException | URISyntaxException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }

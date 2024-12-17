@@ -9,6 +9,13 @@ public interface UUIDController {
         return UUID.randomUUID();
     }
 
+
     public void createNewEntity(int count);
+
+    public void createNewEntity();
+
+    public void setCurrentEntity(UUID uuid);
+
+    public UUID getCurrentEntity();
 
 }

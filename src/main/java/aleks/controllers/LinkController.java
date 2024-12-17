@@ -12,5 +12,11 @@ public interface LinkController {
     public void removeEntry(String shortLink, User user);
 
     //analyze all the links validity duration - remove expired
-    public void removeExpiredLinks(int countLinkUsed, User user);
+    public void removeExpiredLinks(User user);
+
+    //check if the entry is present
+    public boolean checkIfLinkExists(String shortLink, User user);
+
+    //get the correct entry
+    public String getTheLink(String shortLink, User user);
 }

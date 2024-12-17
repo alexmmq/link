@@ -10,6 +10,13 @@ public class User {
     private Map<String, String> links;
     private Map<String, Long> shortLinksTimeStamp;
     private Map<String, Integer> shortLinksCount;
+    public User(UUID UUID){
+        this.UUID = UUID;
+        this.countLinkUsed = -1;
+        links = new HashMap<>();
+        shortLinksTimeStamp = new HashMap<>();
+        shortLinksCount = new HashMap<>();
+    }
     public User(UUID UUID, int countLinkUsed) {
         this.UUID = UUID;
         this.countLinkUsed = countLinkUsed;

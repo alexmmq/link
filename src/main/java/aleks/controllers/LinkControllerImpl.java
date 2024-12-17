@@ -17,6 +17,8 @@ public class LinkControllerImpl implements LinkController{
         Map<String, Long> timestampMap = user.getShortLinksTimeStamp();
         Map<String, Integer> countMap = user.getShortLinksCount();
 
+        //call to printNewLinkCreated()
+
         //storing shortLink and longLink
         linksMap.put(shortLink, longLink);
         user.setLinks(linksMap);
@@ -66,7 +68,8 @@ public class LinkControllerImpl implements LinkController{
     }
 
     @Override
-    public void removeExpiredLinks(int countLinkUsed, User user) {
+    public void removeExpiredLinks(User user) {
+        int countLinkUsed = user.getCountLinkUsed();
         //iterating through the Map with counts, if we have already expired links, invoking remove method
         //checking for both timestamp and count of used links
         Map<String, Integer> countMap = user.getShortLinksCount();
@@ -75,6 +78,7 @@ public class LinkControllerImpl implements LinkController{
         while(iterator2.hasNext()){
             Instant instant = Instant.now();
             if(iterator2.next().getValue() + timeout > instant.toEpochMilli() ){
+                //call to printLinkExpired() due to timeout
                 removeEntry(iterator2.next().getKey(), user);
             }
         }
@@ -82,9 +86,33 @@ public class LinkControllerImpl implements LinkController{
         Iterator<Map.Entry<String, Integer>> iterator = countMap.entrySet().iterator();
         while(iterator.hasNext()){
             if(iterator.next().getValue() == countLinkUsed){
+                //call to printLinkExpired() due to exceeding usage limits
                 removeEntry(iterator.next().getKey(), user);
             }
         }
 
+    }
+
+    @Override
+    public boolean checkIfLinkExists(String shortLink, User user) {
+        //iterating through the maps
+        boolean entryExists = false;
+        Map<String, String> linksMap = user.getLinks();
+        for (Map.Entry<String, String> stringStringEntry : linksMap.entrySet()) {
+            entryExists = stringStringEntry.getKey().equals(shortLink);
+        }
+        return entryExists;
+    }
+
+    @Override
+    public String getTheLink(String shortLink, User user) {
+        String value = "";
+        Map<String, String> linksMap = user.getLinks();
+        for (Map.Entry<String, String> stringStringEntry : linksMap.entrySet()) {
+            if (stringStringEntry.getKey().equals(shortLink)) {
+                value = stringStringEntry.getValue();
+            }
+        }
+        return value;
     }
 }

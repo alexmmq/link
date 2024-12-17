@@ -9,6 +9,12 @@ public interface LinkService {
     public String createAShortLink(String longLink, User user);
 
     //case of parsing through available Links
-    public Map<String, String> getListOfAvailableLinks(User user);
+    public void getPrettyListOfAvailableLinks(User user);
+
+    //case of deleting the entry
+    public void removeAShortLink(String shortLink, User user);
+
+    //case of connecting to a link
+    public void connectToLink(String shortLink, User user);
 
 }
