@@ -20,11 +20,17 @@ public class App
     static UUIDControllerImpl uuidController = new UUIDControllerImpl();
     public static void main( String[] args )
     {
-        //create a service showing as prefix the UUID of user (imitation of logging in)
+        //TODO create a service showing as prefix the UUID of user (imitation of logging in)
+        //TODO create a service to switch the user
         //uuid string is asked on start up - unless user initiated user change or creating of new uuid
-        String uuid = getUUID();
-
-
+        //if succeeded - going on with entering a link
+        String currentUserUuid;
+        User currentUser;
+        while(true){
+         currentUserUuid = getUUID();
+         currentUser = uuidController.getCurrentUser(currentUserUuid);
+         getLink(currentUser);
+        }
     }
 
     //asks in a recursion until user enters a correct UUID or initiate creating of new UUID instance
@@ -70,5 +76,42 @@ public class App
                 getUUID();
             }
             return result;
+    }
+
+    //gets a link from user depending on the action taken - does actual connection to the required link
+    public static String getLink(User user){
+        String input = "";
+        String result = "";
+        System.out.println(user.getUUID().toString() + "> " +
+                "Enter 's' - to use a short link, 'l' - to create a short link from long one");
+        try{
+            input = reader.readLine();
+            //case short link, invoke a method to show all available links
+            if(input.equals("s")){
+                linkService.getPrettyListOfAvailableLinks(user);
+                System.out.println(user.getUUID().toString() + "> "
+                        + "Enter a short link to use");
+                input = reader.readLine();
+                linkService.connectToLink(input,user);
+            } else if(input.equals("l")){
+                String shortLinkCreated;
+                System.out.println(user.getUUID().toString() + "> "
+                        + "Enter a link to be transformed into short link");
+                input = reader.readLine();
+                shortLinkCreated = linkService.createAShortLink(input, user);
+                System.out.println(user.getUUID().toString() + "> "
+                        + "You have created a short link: " + shortLinkCreated);
+                //invoking recursively to be in the starting point of menu
+                getLink(user);
+            } else{
+                //case of typo
+                System.out.println(user.getUUID().toString() + "> "
+                        + "Invalid input, please try again");
+                getLink(user);
+            }
+        } catch (Exception e){
+            //TODO work on exception handling
+        }
+        return "";
     }
 }

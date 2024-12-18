@@ -39,14 +39,15 @@ public class LinkServiceImpl implements LinkService{
     @Override
     public void getPrettyListOfAvailableLinks(User user) {
         // force removing of expired links
-        linkController.removeExpiredLinks(user);
-        Map<String, String> links = user.getLinks();
+        if(!user.getLinks().isEmpty()){
+          //  linkController.removeExpiredLinks(user);
+            Map<String, String> links = user.getLinks();
 
-        //pretty formatting of map for user
-        System.out.println(" Short Links         " + "Long Links");
-        Iterator<Map.Entry<String, String>> iterator = links.entrySet().iterator();
-        while(iterator.hasNext()){
-            System.out.print(iterator.next().getKey() + " " + iterator.next().getValue());
+            //pretty formatting of map for user
+            System.out.println(" Short Links         " + "Long Links");
+            for(Map.Entry<String, String> set : links.entrySet()){
+                System.out.println(set.getKey() + " " + set.getValue());
+            }
         }
     }
 
@@ -65,6 +66,7 @@ public class LinkServiceImpl implements LinkService{
                 Desktop.getDesktop().browse(new URI(linkController.getTheLink(shortLink, user)));
             } catch (IOException | URISyntaxException e) {
                 throw new RuntimeException(e);
+                //TODO call a method informing user about failure
             }
         }
     }

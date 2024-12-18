@@ -1,5 +1,7 @@
 package aleks.controllers;
 
+import aleks.entity.User;
+
 import java.util.UUID;
 
 public interface UUIDController {
@@ -17,5 +19,7 @@ public interface UUIDController {
     public void setCurrentEntity(UUID uuid);
 
     public UUID getCurrentEntity();
+
+    public User getCurrentUser(String uuid);
 
 }

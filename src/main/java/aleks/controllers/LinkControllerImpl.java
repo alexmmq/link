@@ -23,6 +23,7 @@ public class LinkControllerImpl implements LinkController{
         linksMap.put(shortLink, longLink);
         user.setLinks(linksMap);
 
+
         //getting current timestamp, storing
         Instant instant = Instant.now();
         timestampMap.put(shortLink, instant.toEpochMilli());

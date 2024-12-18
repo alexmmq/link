@@ -32,6 +32,18 @@ public class UUIDControllerImpl implements UUIDController {
     }
 
     @Override
+    public User getCurrentUser(String uuid) {
+        User userToReturn = null;
+        //parsing through users, returning appropriate user with UUID
+        for (User user : users) {
+            if(user.getUUID().toString().equals(uuid)){
+                userToReturn = user;
+            }
+        }
+        return userToReturn;
+    }
+
+    @Override
     public void setCurrentEntity(UUID uuid) {
         //checking if arraylist of users is empty
         if(!users.isEmpty()){
