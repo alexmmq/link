@@ -72,15 +72,18 @@ public class App
                     }
                 } else {
                     //case 2 - expecting UUID, parsing through UUID embedded Arraylist of users
-                    for(User user: uuidController.users){
-                        if(user.getUUID().toString().equals(input)){
+                    boolean wrongInput = true;
+                    for(User user: uuidController.users) {
+                        if (user.getUUID().toString().equals(input)) {
                             //setting existing user as an active user
-                            result = user.getUUID().toString();
                             uuidController.setCurrentEntity(user.getUUID());
-                        } else{
-                            System.out.println("Wrong UUID");
-                            getUUID();
+                            result = user.getUUID().toString();
+                            wrongInput = false;
                         }
+                    }
+                    if(wrongInput){
+                        System.out.println("Wrong UUID");
+                        getUUID();
                     }
                 }
             } catch (IOException e) {
@@ -118,7 +121,9 @@ public class App
                 //invoking recursively to be in the starting point of menu
                 getLink(user);
             } else if (input.equals("u")){
+                input = "";
                 getUUID();
+                input = "";
             } else if(input.equals("e")){
                 linkService.getPrettyListOfAvailableLinks(user);
                 System.out.println("Enter a long link to edit");
@@ -146,7 +151,8 @@ public class App
             }
         } catch (Exception e){
             //TODO work on exception handling
+            e.printStackTrace();
         }
-        return "";
+        return result;
     }
 }

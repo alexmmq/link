@@ -77,6 +77,8 @@ public class LinkServiceImpl implements LinkService{
                 throw new RuntimeException(e);
                 //TODO call a method informing user about failure
             }
+        } else{
+            System.out.println("There is no such a link");
         }
     }
 }
