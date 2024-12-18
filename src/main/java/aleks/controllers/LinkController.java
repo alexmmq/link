@@ -17,6 +17,9 @@ public interface LinkController {
     //check if the entry is present
     public boolean checkIfLinkExists(String shortLink, User user);
 
+    //check if long link entry is present
+    public boolean checkIfLongLinkExists(String longLink, User user);
+
     //get the correct entry
     public String getTheLink(String shortLink, User user);
 }

@@ -7,7 +7,6 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Iterator;
 import java.util.Map;
 
 public class LinkServiceImpl implements LinkService{
@@ -37,16 +36,26 @@ public class LinkServiceImpl implements LinkService{
     }
 
     @Override
+    public boolean isAShortLink(String shortLink, User user) {
+        return linkController.checkIfLinkExists(shortLink, user);
+    }
+
+    @Override
+    public boolean isALongLink(String longLink, User user) {
+        return linkController.checkIfLongLinkExists(longLink, user);
+    }
+
+    @Override
     public void getPrettyListOfAvailableLinks(User user) {
         // force removing of expired links
         if(!user.getLinks().isEmpty()){
-          //  linkController.removeExpiredLinks(user);
+          //linkController.removeExpiredLinks(user);
             Map<String, String> links = user.getLinks();
 
             //pretty formatting of map for user
-            System.out.println(" Short Links         " + "Long Links");
+            System.out.println(" Short Links           " + "   Long Links");
             for(Map.Entry<String, String> set : links.entrySet()){
-                System.out.println(set.getKey() + " " + set.getValue());
+                System.out.println(set.getKey() + "  " + set.getValue());
             }
         }
     }

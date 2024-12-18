@@ -7,6 +7,7 @@ import aleks.services.LinkServiceImpl;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -37,6 +38,17 @@ public class App
     public static String getUUID(){
         String input = "";
         String result = "";
+        ArrayList<User> users = uuidController.getUsers();
+        //a method to parse through existing users, showing existing ones in case
+        if(!users.isEmpty()){
+            System.out.println("Registered Users:");
+            for(User user: users){
+                System.out.println(user.getUUID().toString());
+            }
+        } else {
+            System.out.println("Currently there are no users");
+        }
+
             System.out.println("Please enter a UUID number or enter 'init' to create one");
             try {
                 input = reader.readLine();
@@ -83,7 +95,8 @@ public class App
         String input = "";
         String result = "";
         System.out.println(user.getUUID().toString() + "> " +
-                "Enter 's' - to use a short link, 'l' - to create a short link from long one");
+                "\n Enter 's' - to use a short link, \n 'l' - to create a short link from long one" +
+                "\n 'u' - change the user, \n 'e' - edit links, \n 'r' - remove links");
         try{
             input = reader.readLine();
             //case short link, invoke a method to show all available links
@@ -93,6 +106,7 @@ public class App
                         + "Enter a short link to use");
                 input = reader.readLine();
                 linkService.connectToLink(input,user);
+                getLink(user);
             } else if(input.equals("l")){
                 String shortLinkCreated;
                 System.out.println(user.getUUID().toString() + "> "
@@ -103,7 +117,28 @@ public class App
                         + "You have created a short link: " + shortLinkCreated);
                 //invoking recursively to be in the starting point of menu
                 getLink(user);
-            } else{
+            } else if (input.equals("u")){
+                getUUID();
+            } else if(input.equals("e")){
+                linkService.getPrettyListOfAvailableLinks(user);
+                System.out.println("Enter a long link to edit");
+                input = reader.readLine();
+                //case of editing the long link
+                getLink(user);
+            } else if (input.equals("r")){
+              linkService.getPrettyListOfAvailableLinks(user);
+                System.out.println("Enter a short link to remove");
+                input = reader.readLine();
+                if(linkService.isAShortLink(input, user)){
+                    String deleted = input;
+                    linkService.removeAShortLink(input, user);
+                    System.out.println("The following link was removed: " + deleted);
+                    getLink(user);
+                } else {
+                    System.out.println("There is no such a short link");
+                    getLink(user);
+                }
+            } else {
                 //case of typo
                 System.out.println(user.getUUID().toString() + "> "
                         + "Invalid input, please try again");

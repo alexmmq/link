@@ -26,7 +26,7 @@ public class LinkControllerImpl implements LinkController{
 
         //getting current timestamp, storing
         Instant instant = Instant.now();
-        timestampMap.put(shortLink, instant.toEpochMilli());
+        timestampMap.put(shortLink, instant.getEpochSecond());
         user.setShortLinksTimeStamp(timestampMap);
 
         //setting used times to 0
@@ -62,6 +62,11 @@ public class LinkControllerImpl implements LinkController{
                 iterator3.remove();
             }
         }
+
+        user.setLinks(linksMap);
+        user.setShortLinksTimeStamp(timestampMap);
+        user.setShortLinksCount(countMap);
+
         if(!entryExists) {
             //invoke method to inform user - there is no such link
         }
@@ -78,7 +83,7 @@ public class LinkControllerImpl implements LinkController{
         Iterator<Map.Entry<String, Long>> iterator2 = timestampMap.entrySet().iterator();
         while(iterator2.hasNext()){
             Instant instant = Instant.now();
-            if(iterator2.next().getValue() + timeout > instant.toEpochMilli() ){
+            if(iterator2.next().getValue() + timeout < instant.getEpochSecond()){
                 //call to printLinkExpired() due to timeout
                 removeEntry(iterator2.next().getKey(), user);
             }
@@ -101,6 +106,16 @@ public class LinkControllerImpl implements LinkController{
         Map<String, String> linksMap = user.getLinks();
         for (Map.Entry<String, String> stringStringEntry : linksMap.entrySet()) {
             entryExists = stringStringEntry.getKey().equals(shortLink);
+        }
+        return entryExists;
+    }
+
+    @Override
+    public boolean checkIfLongLinkExists(String longLink, User user) {
+        boolean entryExists = false;
+        Map<String, String> linksMap = user.getLinks();
+        for (Map.Entry<String, String> stringStringEntry : linksMap.entrySet()) {
+            entryExists = stringStringEntry.getValue().equals(longLink);
         }
         return entryExists;
     }
