@@ -20,6 +20,9 @@ public interface LinkController {
     //check if long link entry is present
     public boolean checkIfLongLinkExists(String longLink, User user);
 
+    //editing a long link
+    public void editALongLink(String longLink, String longLinkNewValue, User user);
+
     //get the correct entry
     public String getTheLink(String shortLink, User user);
 }

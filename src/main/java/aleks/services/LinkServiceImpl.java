@@ -81,4 +81,9 @@ public class LinkServiceImpl implements LinkService{
             System.out.println("There is no such a link");
         }
     }
+
+    @Override
+    public void editTheLongLink(String longLink, String longLinkNewValue, User user) {
+        linkController.editALongLink(longLink, longLinkNewValue, user);
+    }
 }

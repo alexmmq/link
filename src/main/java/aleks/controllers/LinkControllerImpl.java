@@ -121,6 +121,21 @@ public class LinkControllerImpl implements LinkController{
     }
 
     @Override
+    public void editALongLink(String longLink, String longLinkNewValue, User user) {
+        if(checkIfLongLinkExists(longLink, user)) {
+            Map<String, String> linksMap = user.getLinks();
+            for(Map.Entry<String, String> entry : linksMap.entrySet()) {
+                if(entry.getValue().equals(longLink)) {
+                    entry.setValue(longLinkNewValue);
+                }
+            }
+            user.setLinks(linksMap);
+        } else{
+            System.out.println("This link does not exist");
+        }
+    }
+
+    @Override
     public String getTheLink(String shortLink, User user) {
         String value = "";
         Map<String, String> linksMap = user.getLinks();

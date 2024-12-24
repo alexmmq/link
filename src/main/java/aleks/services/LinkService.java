@@ -23,4 +23,7 @@ public interface LinkService {
     //case of connecting to a link
     public void connectToLink(String shortLink, User user);
 
+    //case of editing the link
+    public void editTheLongLink(String longLink, String longLinkNewValue, User user);
+
 }
