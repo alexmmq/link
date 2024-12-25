@@ -3,7 +3,6 @@ package aleks.controllers;
 import aleks.entity.User;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -114,6 +113,7 @@ public class LinkControllerImpl implements LinkController{
         //parsing through HashSet Values to remove all expired links
         for (String s : shortLinksToRemove) {
             removeEntry(s, user);
+            System.out.println("Link " + s + " has been removed due to expiration");
         }
     }
 
@@ -125,6 +125,7 @@ public class LinkControllerImpl implements LinkController{
         for (Map.Entry<String, String> stringStringEntry : linksMap.entrySet()) {
             if(stringStringEntry.getKey().equals(shortLink)) {
                 entryExists = true;
+                break;
             }
         }
         return entryExists;

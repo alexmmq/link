@@ -2,30 +2,29 @@ package aleks.controllers;
 
 import aleks.entity.User;
 
-import java.util.UUID;
 
 public interface LinkController {
     //create entry
-    public void createEntry(String shortLink, String longLink, User user);
+    void createEntry(String shortLink, String longLink, User user);
 
     //update count Entry for each link - counter of times link has been used
-    public void updateEntry(String shortLink, User user);
+    void updateEntry(String shortLink, User user);
 
     //remove entry
-    public void removeEntry(String shortLink, User user);
+    void removeEntry(String shortLink, User user);
 
     //analyze all the links validity duration - remove expired
-    public void removeExpiredLinks(User user);
+    void removeExpiredLinks(User user);
 
     //check if the entry is present
-    public boolean checkIfLinkExists(String shortLink, User user);
+    boolean checkIfLinkExists(String shortLink, User user);
 
     //check if long link entry is present
-    public boolean checkIfLongLinkExists(String longLink, User user);
+    boolean checkIfLongLinkExists(String longLink, User user);
 
     //editing a long link
-    public void editALongLink(String longLink, String longLinkNewValue, User user);
+    void editALongLink(String longLink, String longLinkNewValue, User user);
 
     //get the correct entry
-    public String getTheLink(String shortLink, User user);
+    String getTheLink(String shortLink, User user);
 }

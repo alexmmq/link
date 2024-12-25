@@ -48,6 +48,7 @@ public class LinkServiceImpl implements LinkService{
     @Override
     public void getPrettyListOfAvailableLinks(User user) {
         // force removing of expired links
+        linkController.removeExpiredLinks(user);
         if(!user.getLinks().isEmpty()){
           //linkController.removeExpiredLinks(user);
             Map<String, String> links = user.getLinks();
@@ -62,6 +63,7 @@ public class LinkServiceImpl implements LinkService{
 
     @Override
     public Map<String, String> availableLinks(User user) {
+        linkController.removeExpiredLinks(user);
         return user.getLinks();
     }
 
