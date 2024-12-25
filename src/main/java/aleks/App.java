@@ -32,7 +32,7 @@ public class App
         String longlink2 = "https://stackoverflow.com/questions/10993403/how-to-replace-hashmap-values-while-iterating-over-them-in-java";
         String longlink3 = "https://docs.oracle.com/javase/8/docs/api/java/io/BufferedReader.html";
         //creating entity
-        uuidController.createNewEntity(15);
+        uuidController.createNewEntity(3);
         //setting up the current user
         users = uuidController.getUsers();
         currentUser = users.get(0);
@@ -45,9 +45,12 @@ public class App
         linkService.getPrettyListOfAvailableLinks(currentUser);
         Map<String, String> availableLinks = linkService.availableLinks(currentUser);
         ArrayList<String> shortLinks = new ArrayList<>();
-        for(int i = 1; i < 5; i++){
-            for(Map.Entry<String, String> entry : availableLinks.entrySet()) {
-                linkService.connectToLink(entry.getKey(), currentUser);
+        for(Map.Entry<String, String> entry : availableLinks.entrySet()) {
+            shortLinks.add(entry.getKey());
+        }
+        for(int i = 1; i < 15; i++){
+            for(String shortLink:shortLinks){
+                linkService.connectToLink(shortLink, currentUser);
             }
         }
 

@@ -98,18 +98,16 @@ public class LinkControllerImpl implements LinkController{
         Map<String, Long> timestampMap = user.getShortLinksTimeStamp();
         HashSet<String> shortLinksToRemove = new HashSet<>();
 
-        Iterator<Map.Entry<String, Long>> iterator = timestampMap.entrySet().iterator();
-        while(iterator.hasNext()){
+        for(Map.Entry<String, Long> entry : timestampMap.entrySet()) {
             Instant instant = Instant.now();
-            if(iterator.next().getValue() + timeout < instant.getEpochSecond()){
-                shortLinksToRemove.add(iterator.next().getKey());
+            if(entry.getValue() + timeout < instant.getEpochSecond()){
+                shortLinksToRemove.add(entry.getKey());
             }
         }
 
-        Iterator<Map.Entry<String, Integer>> iterator2 = countMap.entrySet().iterator();
-        while(iterator2.hasNext()){
-            if(iterator2.next().getValue() >= countLinkUsed){
-                shortLinksToRemove.add(iterator2.next().getKey());
+        for(Map.Entry<String, Integer> entry : countMap.entrySet()) {
+            if(entry.getValue() >= countLinkUsed) {
+                shortLinksToRemove.add(entry.getKey());
             }
         }
 
