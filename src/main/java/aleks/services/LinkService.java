@@ -17,6 +17,9 @@ public interface LinkService {
     //case of parsing through available Links
     public void getPrettyListOfAvailableLinks(User user);
 
+    //case of getting short links
+    public Map<String, String> availableLinks(User user);
+
     //case of deleting the entry
     public void removeAShortLink(String shortLink, User user);
 

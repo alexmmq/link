@@ -61,6 +61,11 @@ public class LinkServiceImpl implements LinkService{
     }
 
     @Override
+    public Map<String, String> availableLinks(User user) {
+        return user.getLinks();
+    }
+
+    @Override
     public void removeAShortLink(String shortLink, User user) {
         linkController.removeEntry(shortLink, user);
     }
@@ -73,6 +78,8 @@ public class LinkServiceImpl implements LinkService{
         if(linkController.checkIfLinkExists(shortLink, user)){
             try {
                 Desktop.getDesktop().browse(new URI(linkController.getTheLink(shortLink, user)));
+                //update that link has been used
+                linkController.updateEntry(shortLink, user);
             } catch (IOException | URISyntaxException e) {
                 throw new RuntimeException(e);
                 //TODO call a method informing user about failure

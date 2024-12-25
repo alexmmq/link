@@ -3,6 +3,8 @@ package aleks.controllers;
 import aleks.entity.User;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -33,6 +35,20 @@ public class LinkControllerImpl implements LinkController{
         countMap.put(shortLink, 0);
         user.setShortLinksCount(countMap);
     }
+
+    @Override
+    public void updateEntry(String shortLink, User user) {
+        Map<String, Integer> countMap = user.getShortLinksCount();
+        int currentValue = 0;
+        for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
+            if (entry.getKey().equals(shortLink)) {
+                currentValue = entry.getValue();
+            }
+        }
+        countMap.put(shortLink, currentValue + 1);
+        user.setShortLinksCount(countMap);
+    }
+
 
     @Override
     public void removeEntry(String shortLink, User user) {
@@ -80,23 +96,27 @@ public class LinkControllerImpl implements LinkController{
         //checking for both timestamp and count of used links
         Map<String, Integer> countMap = user.getShortLinksCount();
         Map<String, Long> timestampMap = user.getShortLinksTimeStamp();
-        Iterator<Map.Entry<String, Long>> iterator2 = timestampMap.entrySet().iterator();
-        while(iterator2.hasNext()){
-            Instant instant = Instant.now();
-            if(iterator2.next().getValue() + timeout < instant.getEpochSecond()){
-                //call to printLinkExpired() due to timeout
-                removeEntry(iterator2.next().getKey(), user);
-            }
-        }
+        HashSet<String> shortLinksToRemove = new HashSet<>();
 
-        Iterator<Map.Entry<String, Integer>> iterator = countMap.entrySet().iterator();
+        Iterator<Map.Entry<String, Long>> iterator = timestampMap.entrySet().iterator();
         while(iterator.hasNext()){
-            if(iterator.next().getValue() == countLinkUsed){
-                //call to printLinkExpired() due to exceeding usage limits
-                removeEntry(iterator.next().getKey(), user);
+            Instant instant = Instant.now();
+            if(iterator.next().getValue() + timeout < instant.getEpochSecond()){
+                shortLinksToRemove.add(iterator.next().getKey());
             }
         }
 
+        Iterator<Map.Entry<String, Integer>> iterator2 = countMap.entrySet().iterator();
+        while(iterator2.hasNext()){
+            if(iterator2.next().getValue() >= countLinkUsed){
+                shortLinksToRemove.add(iterator2.next().getKey());
+            }
+        }
+
+        //parsing through HashSet Values to remove all expired links
+        for (String s : shortLinksToRemove) {
+            removeEntry(s, user);
+        }
     }
 
     @Override
@@ -105,7 +125,9 @@ public class LinkControllerImpl implements LinkController{
         boolean entryExists = false;
         Map<String, String> linksMap = user.getLinks();
         for (Map.Entry<String, String> stringStringEntry : linksMap.entrySet()) {
-            entryExists = stringStringEntry.getKey().equals(shortLink);
+            if(stringStringEntry.getKey().equals(shortLink)) {
+                entryExists = true;
+            }
         }
         return entryExists;
     }

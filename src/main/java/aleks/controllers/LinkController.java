@@ -8,6 +8,9 @@ public interface LinkController {
     //create entry
     public void createEntry(String shortLink, String longLink, User user);
 
+    //update count Entry for each link - counter of times link has been used
+    public void updateEntry(String shortLink, User user);
+
     //remove entry
     public void removeEntry(String shortLink, User user);
 
