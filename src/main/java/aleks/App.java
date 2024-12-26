@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 /**
- * Hello world!
+ * LinkShortener Service
  *
  */
 public class App
@@ -20,7 +20,6 @@ public class App
     static boolean isLoggedIn = false;
     public static void main( String[] args )
     {
-
         while(true){
           try{
               if(isLoggedIn){
@@ -141,7 +140,7 @@ public class App
                 createUUID();
             }
         }catch (Exception e){
-
+            e.printStackTrace();
         }
     }
 
@@ -172,14 +171,11 @@ public class App
                     login();
                 }
             }catch (Exception e){
-
+                e.printStackTrace();
             }
         }else{
             System.out.println("No UUIDs found");
             createUUID();
         }
-
-
     }
-
 }

@@ -84,7 +84,6 @@ public class LinkServiceImpl implements LinkService{
                 linkController.updateEntry(shortLink, user);
             } catch (IOException | URISyntaxException e) {
                 throw new RuntimeException(e);
-                //TODO call a method informing user about failure
             }
         } else{
             System.out.println("There is no such a link");

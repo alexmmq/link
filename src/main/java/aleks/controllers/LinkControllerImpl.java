@@ -82,10 +82,6 @@ public class LinkControllerImpl implements LinkController{
         user.setShortLinksTimeStamp(timestampMap);
         user.setShortLinksCount(countMap);
 
-        if(!entryExists) {
-            //invoke method to inform user - there is no such link
-        }
-
     }
 
     @Override
